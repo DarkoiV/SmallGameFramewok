@@ -8,4 +8,5 @@ target_link_libraries(SmallGameFramework PUBLIC
 set_target_properties(SmallGameFramework PROPERTIES
     CXX_STANDARD 20)
 
+add_subdirectory(common)
 add_subdirectory(core)

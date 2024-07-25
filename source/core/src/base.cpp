@@ -4,7 +4,7 @@
 #include "quill/LogMacros.h"
 #include "quill/sinks/ConsoleSink.h"
 
-using SmallGameFramework::Core::Base;
+using SmallGameFramework::Base;
 
 Base::Base()
 {
@@ -18,6 +18,24 @@ Base::~Base()
     LOG_INFO(logger, "Base has been destroyed");
 }
 
+void Base::run()
+{
+    LOG_INFO(logger, "Entering main loop");
+    try
+    {
+        while (isRunning)
+            mainLoop();
+    }
+    catch (std::logic_error& e)
+    {
+        LOG_ERROR(logger, "Caught logic error: {}", e.what());
+    }
+    catch (...)
+    {
+        LOG_ERROR(logger, "Caught unknown error");
+    }
+}
+
 void Base::startLogger()
 {
     quill::Backend::start();
@@ -26,4 +44,12 @@ void Base::startLogger()
     logger           = quill::Frontend::create_or_get_logger(loggerName, consoleSink);
 
     LOG_INFO(logger, "Logger has started");
+}
+
+void Base::mainLoop()
+{
+    auto& scene = sceneManager.getScene();
+    while (scene.isRunning())
+    {
+    }
 }

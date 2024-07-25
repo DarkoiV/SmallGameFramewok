@@ -1,8 +1,9 @@
 #include "SmallGameFramework/core/base.hpp"
 
-using namespace SmallGameFramework::Core;
+using namespace SmallGameFramework;
 
 int main()
 {
-    Base();
+    Base base;
+    base.run();
 }
