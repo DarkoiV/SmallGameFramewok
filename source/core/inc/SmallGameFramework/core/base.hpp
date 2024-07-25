@@ -12,19 +12,30 @@ struct Base
     Base(Base&)  = delete;
     Base(Base&&) = delete;
 
-    void run();
+    virtual void onEnter() = 0;
+    virtual void onExit()  = 0;
+
+    static void exec();
+
+  protected:
+    SceneManager sceneManager;
+
+    const std::string appLoggerName = "App";
+    quill::Logger*    appLogger;
 
   private:
+    void run();
     void startLogger();
+    void createWindow();
     void mainLoop();
 
-    const std::string loggerName = "Base";
-    quill::Logger*    logger;
+    const std::string coreLoggerName = "Core";
+    quill::Logger*    coreLogger;
 
     bool     isRunning      = true;
     uint64_t logicTimeStamp = 0;
     uint32_t logicLag       = 0;
 
-    SceneManager sceneManager;
+    inline static Base* app = nullptr;
 };
 } // namespace SmallGameFramework

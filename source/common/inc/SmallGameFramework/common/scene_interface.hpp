@@ -14,10 +14,7 @@ struct SceneInterface
     virtual void onUpdate() = 0;
     virtual void onExit()   = 0;
 
-    virtual bool isRunning() { return isRunning_; }
-
-  protected:
-    bool isRunning_ = true;
+    virtual bool isRunning() = 0;
 };
 
 using ScenePtr = std::unique_ptr<SceneInterface>;

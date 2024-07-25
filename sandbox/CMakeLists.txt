@@ -1,5 +1,5 @@
 add_executable(Sandbox
-    main.cpp)
+    sandbox.cpp)
 
 target_link_libraries(Sandbox 
     SmallGameFramework)

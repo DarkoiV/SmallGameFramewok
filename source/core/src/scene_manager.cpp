@@ -8,3 +8,12 @@ SmallGameFramework::SceneInterface& SceneManager::getScene()
 
     return *currentScene;
 }
+
+void SceneManager::switchToNextScene()
+{
+    if (currentScene) currentScene->onExit();
+    if (not nextScene) throw std::logic_error("No next scene set");
+
+    currentScene = std::move(nextScene);
+    currentScene->onEnter();
+}
