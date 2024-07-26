@@ -1,7 +1,6 @@
 #pragma once
+#include "SmallGameFramework/common/logger.hpp"
 #include "SmallGameFramework/core/scene_manager.hpp"
-#include "quill/Logger.h"
-#include <string>
 
 namespace SmallGameFramework {
 struct Base
@@ -17,21 +16,17 @@ struct Base
 
     static void exec();
 
+  private:
+    Logger logger;
+
   protected:
     SceneManager sceneManager;
 
-    const std::string appLoggerName = "App";
-    quill::Logger*    appLogger;
-
   private:
     void run();
-    void startLogger();
     void createWindow();
     void mainLoop();
     void eventLoop(SceneInterface&);
-
-    const std::string coreLoggerName = "Core";
-    quill::Logger*    coreLogger;
 
     bool     isRunning = true;
     uint64_t logicTS   = 0;
