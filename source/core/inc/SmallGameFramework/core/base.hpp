@@ -28,13 +28,14 @@ struct Base
     void startLogger();
     void createWindow();
     void mainLoop();
+    void eventLoop(SceneInterface&);
 
     const std::string coreLoggerName = "Core";
     quill::Logger*    coreLogger;
 
-    bool     isRunning      = true;
-    uint64_t logicTimeStamp = 0;
-    uint32_t logicLag       = 0;
+    bool     isRunning = true;
+    uint64_t logicTS   = 0;
+    uint32_t logicLag  = 0;
 
     inline static Base* app = nullptr;
 };

@@ -13,6 +13,7 @@ static const char*   TITLE         = "TITLE";
 static int           RENDER_WIDTH  = 640;
 static int           RENDER_HEIGHT = 400;
 static int           RENDER_SCALE  = 2;
+static uint32_t      LOGIC_TICK    = 10;
 
 Base::Base()
 {
@@ -42,9 +43,9 @@ void Base::run()
     LOG_INFO(coreLogger, "Entering main loop");
     try
     {
-        sceneManager.switchToNextScene();
         while (isRunning)
         {
+            sceneManager.switchToNextScene();
             mainLoop();
         }
     }
@@ -104,9 +105,35 @@ void Base::createWindow()
 void Base::mainLoop()
 {
     auto& scene = sceneManager.getScene();
+    logicTS     = SDL_GetTicks64();
     while (scene.isRunning())
     {
-        scene.onUpdate();
+        eventLoop(scene);
+
+        uint64_t currentTS  = SDL_GetTicks64();
+        uint32_t elapsed    = currentTS - logicTS;
+        logicTS             = currentTS;
+        logicLag           += elapsed;
+
+        while (logicLag >= LOGIC_TICK)
+        {
+            scene.onUpdate();
+            logicLag -= LOGIC_TICK;
+        }
     }
-    sceneManager.switchToNextScene();
+}
+
+void Base::eventLoop(SceneInterface& scene)
+{
+    SDL_Event e;
+    while (SDL_PollEvent(&e))
+    {
+        switch (e.type)
+        {
+        case SDL_QUIT:
+            scene.onQuitRequest();
+            isRunning = scene.isRunning();
+            break;
+        }
+    }
 }

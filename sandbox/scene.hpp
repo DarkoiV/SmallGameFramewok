@@ -9,5 +9,10 @@ struct Scene : SmallGameFramework::SceneInterface
 
     void onExit() override { }
 
-    bool isRunning() override { return false; }
+    void onQuitRequest() override { isRunning_ = false; }
+
+    bool isRunning() const override { return isRunning_; }
+
+  private:
+    bool isRunning_ = true;
 };
